@@ -832,5 +832,13 @@ h1{margin:0;font-size:22px;font-weight:950;}
     }
   });
 </script>
+
+  <!-- Mobile cheat-code input (helps bring up keyboard on phones) -->
+  <div id="mobileCodeDock" style="position:fixed; right:12px; bottom:12px; z-index:99; display:flex; gap:8px; align-items:center; padding:8px 10px; border-radius:14px; border:1px solid rgba(255,255,255,0.12); background:rgba(0,0,0,0.45); backdrop-filter: blur(10px);">
+    <span style="opacity:.7; font-weight:900; font-size:12px; letter-spacing:.08em; text-transform:uppercase;">Code</span>
+    <input id="mobileCode" inputmode="text" autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false"
+      placeholder="tap + type" 
+      style="width:min(170px, 46vw); padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.14); background:rgba(0,0,0,0.18); color:#fff; font-weight:900; outline:none;" />
+  </div>
 </body>
 </html>
