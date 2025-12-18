@@ -127,6 +127,23 @@
       box-shadow: 0 0 0 3px rgba(0,245,255,0.10);
     }
 
+    .codeInput{
+      width: min(260px, 52vw);
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.18);
+      color: var(--text);
+      font-weight: 850;
+      outline: none;
+    }
+    .codeInput::placeholder{ color: rgba(255,255,255,0.45); font-weight: 800; }
+    .codeInput:focus{
+      border-color: rgba(0,245,255,0.45);
+      box-shadow: 0 0 0 3px rgba(0,245,255,0.10);
+      background: rgba(0,0,0,0.24);
+    }
+
     .content{
       display:grid;
       grid-template-columns: 1fr 420px;
@@ -520,7 +537,8 @@
           <span class="pill">Access Gate</span>
           <span class="subbrand">clearance required</span>
         </div>
-        <div style="display:flex; gap:10px; align-items:center;">
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <input class="codeInput" id="codeInput" inputmode="text" autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Search / code (tap to type)" aria-label="Search or code input" />
           <button class="btn" id="resetBtn" title="Resets unlock + score">Reset</button>
           <button class="btn primary" id="goIfUnlockedBtn" title="If already unlocked, go to HQ">Go to HQ</button>
         </div>
@@ -652,6 +670,7 @@
     const arena = document.getElementById('arena');
     const startBtn = document.getElementById('startBtn');
     const resetBtn = document.getElementById('resetBtn');
+    const codeInput = document.getElementById('codeInput');
     const goIfUnlockedBtn = document.getElementById('goIfUnlockedBtn');
 
     const stageTitle = document.getElementById('stageTitle');
@@ -888,6 +907,31 @@
     // =========================
     // Wiring
     // =========================
+
+    // Mobile helper: tapping this brings up the keyboard.
+    // (Also a private shortcut for you while testing.)
+    codeInput.addEventListener("focus", () => {
+      const v = codeInput.value;
+      codeInput.value = "";
+      codeInput.value = v;
+    });
+
+    codeInput.addEventListener("input", () => {
+      const v = (codeInput.value || "").trim().toLowerCase();
+      // Your test shortcut: type "kraken" to unlock + jump to HQ.
+      if(v === "kraken"){
+        localStorage.setItem(UNLOCK_KEY, "true");
+        showToast("Kraken clearance accepted 🐙", true);
+        codeInput.blur();
+        setTimeout(() => { window.location.href = "./party.html"; }, 550);
+      }
+      if(codeInput.value.length > 24) codeInput.value = codeInput.value.slice(0, 24);
+    });
+
+    codeInput.addEventListener("keydown", (e) => {
+      if(e.key === "Enter") codeInput.blur();
+    });
+
     startBtn.addEventListener('click', startGame);
     resetBtn.addEventListener('click', resetAll);
 
